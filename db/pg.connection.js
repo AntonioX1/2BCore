@@ -1,6 +1,6 @@
 'use strict'
 
-const { Pool } = require('pg');
+const { Client } = require('pg');
 
 class PgConnection {
 
@@ -16,14 +16,16 @@ class PgConnection {
 
 		PgConnection.instance = this;
 
-		this._pool = new Pool();
+		this._client = new Client();
 
-		this._pool.on('connect', () => console.log('Conexión realizada'));
+		this._client.connect();
+
+		this._client.on('connect', () => console.log('Conexión realizada'));
 
 	}
 
 }
 
 module.exports = {
-	getConnection: new PgConnection()._pool
+	getConnection: new PgConnection()._client
 };

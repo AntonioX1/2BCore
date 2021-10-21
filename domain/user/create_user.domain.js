@@ -3,18 +3,15 @@
 const { genSaltSync, hashSync } = require('bcrypt');
 const { createUser } = require('../../repositories/user.repository');
 
-const createUserDomain = async (email = '', password = '') => {
+const createUserDomain = async (email = '', password = '', roleId = 0) => {
 
 	const salt = Number(process.env._BcryptSalt);
 
 	const passwordEncrypted = hashSync(password, genSaltSync(salt));
 
-	const user = {
-		email,
-		password: passwordEncrypted
-	};
+	const userCreated = await createUser(email, passwordEncrypted, roleId);
 
-	return createUser(user);
+	return { code: 200, message: 'Usuario creado', data: userCreated };
 
 }
 

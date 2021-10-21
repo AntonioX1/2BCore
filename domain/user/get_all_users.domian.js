@@ -1,17 +1,18 @@
 'use strict'
 
-const PgConnection = require("../../db/pg.connection");
-
-const { query } = new PgConnection();
-
+const { getAllUsers } = require("../../repositories/user.repository");
 
 const getAllUsersDomain = async () => {
 
-  const SQLString = `SELECT * FROM public.users ORDER BY id DESC`;
+  const users = await getAllUsers();
 
-  const SQLValues = [];
+  if(users.length === 0) {
 
-  return await query(SQLString, SQLValues);
+    return { code: 404, message: 'Aún no existen usuarios', data: users };
+
+  }
+
+  return { code: 200, message: 'Usuarios obtenidos', data: users };
 
 }
 

@@ -6,11 +6,14 @@ const createUserController = async (request, response, next) => {
 
   try  {
 
-    const { email, passowrd } = request.body;
+    const { email, password, roleId } = request.body;
 
-    const userCreated = createUserDomain(email, passowrd);
+    const { code, message, data } = await createUserDomain(email, password, roleId);
 
-    response.status(201).json({ user: userCreated });
+    response
+    .status(code)
+    .json({ message, data })
+    .end();
 
   } catch(error) {
 

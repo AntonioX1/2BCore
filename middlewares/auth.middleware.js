@@ -1,12 +1,12 @@
 'use strict'
 
-const { verify } = require('jsonwebtoken');
+const verifyTokenUtil = require("../utils/verify_token.util");
 
 const authMiddleware = (request, response, next) => {
 
-  const athorization = request.header('Authorization');
+  const token = request.header('Authorization');
 
-  if(athorization === undefined) {
+  if(token === undefined) {
 
     response
     .status(400)
@@ -19,7 +19,7 @@ const authMiddleware = (request, response, next) => {
 
   }
 
-  if(athorization.trim().length === 0) {
+  if(token.trim().length === 0) {
 
     response
     .status(400)
@@ -32,8 +32,24 @@ const authMiddleware = (request, response, next) => {
 
   }
 
-  next();
+  const [status, data] = verifyTokenUtil(token);
 
+  if(status === false) {
+
+    response
+    .status(401)
+    .json({
+      message: data
+    })
+    .end();
+
+    return;
+
+  }
+
+  request.user = data;
+
+  next();
 
 }
 

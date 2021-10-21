@@ -25,10 +25,11 @@ const loginDomain = async (email = '', password = '') => {
 
 	const payload = {
 		id: user.id,
-		email: user.email
+		email: user.email,
+		roleId: user.role_id
 	};
 
-	const token = sign(payload, process.env._JWTSecret, { expiresIn: '10s' });
+	const token = sign(payload, process.env._JWTSecret, { expiresIn: '24h' });
 
 	return { code: 200, message: 'Inicio de sesión exitoso', data: token };
 

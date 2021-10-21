@@ -30,4 +30,6 @@ class PgConnection {
 
 }
 
-module.exports = PgConnection;
+module.exports = {
+	getConnection: new PgConnection()._pool
+};
